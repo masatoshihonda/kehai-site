@@ -7,97 +7,136 @@
 <meta name="description" content="KEHAI (気配): a sense of presence, before you can see it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Cormorant+Garamond:ital@1&family=Noto+Serif+JP:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Shippori+Mincho:wght@400&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
   body {
-    min-height: 100vh;
-    color: #fffaf2;
-    background: #8a6644;
-    font-family: "Jost", "Futura", sans-serif;
+    min-height: 100vh; min-height: 100svh;
+    color: #fbf6ee;
+    background: #9a7450;
+    font-family: "Jost", "Futura", "Century Gothic", sans-serif;
+    font-weight: 400;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
-  /* wood: warm base, grain texture, soft light from the upper left */
-  .wood, .wood svg { position: fixed; inset: 0; width: 100%; height: 100%; }
-  .wood { background: linear-gradient(115deg, #c39a6e 0%, #a47b53 45%, #7d5a3b 100%); }
-  .wood svg { mix-blend-mode: multiply; opacity: .55; }
-  .wood::after {
-    content: ""; position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 25% 20%, rgba(255,236,205,.35), transparent 55%),
-                radial-gradient(ellipse at 80% 110%, rgba(40,22,10,.45), transparent 60%);
-  }
-  main {
+
+  /* --- the table: warm oak, fine grain, window light, and the shadow of something just out of frame --- */
+  .scene { position: fixed; inset: 0; overflow: hidden; }
+  .scene .base { position: absolute; inset: 0;
+    background: linear-gradient(100deg, #cfab80 0%, #b48b62 38%, #94704c 70%, #7a5a3c 100%); }
+  .scene svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .scene .grain  { mix-blend-mode: multiply; opacity: .5; }
+  .scene .fibre  { mix-blend-mode: soft-light; opacity: .35; }
+  .scene .light  { position: absolute; inset: 0;
+    background: radial-gradient(70% 60% at 18% 12%, rgba(255,240,215,.42), transparent 70%); }
+  .scene .shadow { position: absolute; width: 95vmax; height: 95vmax; right: -38vmax; bottom: -48vmax;
+    border-radius: 50%; background: rgba(48,28,14,.42); filter: blur(60px);
+    animation: breathe 14s ease-in-out infinite alternate; }
+  .scene .edge   { position: absolute; inset: 0;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(35,20,10,.4)); }
+  @keyframes breathe { from { transform: translate(0,0) scale(1); } to { transform: translate(-2vmax,-1.5vmax) scale(1.03); } }
+
+  /* --- layout --- */
+  .page {
     position: relative;
-    min-height: 100vh;
+    min-height: 100vh; min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: clamp(24px, 4.5vw, 56px) clamp(24px, 6vw, 80px);
+    text-shadow: 0 1px 18px rgba(45,25,10,.3);
+  }
+  header, footer { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .logo { font-weight: 500; font-size: clamp(30px, 4.4vw, 44px); letter-spacing: .03em; line-height: 1; }
+  .tag  { font-size: 13px; font-weight: 300; letter-spacing: .08em; opacity: .85; }
+  .tag b { font-family: "Shippori Mincho", serif; font-weight: 400; margin-right: 10px; letter-spacing: .1em; }
+
+  .poem {
+    align-self: center;
+    justify-self: end;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(32px, 7vw, 72px);
-    text-shadow: 0 1px 14px rgba(50,28,12,.35);
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: clamp(28px, 5vw, 72px);
+    margin: 8vh 0;
   }
-  .logo {
-    font-weight: 500;
-    font-size: clamp(44px, 9vw, 72px);
-    letter-spacing: .02em;
-    line-height: 1;
-  }
-  .meaning {
-    margin-top: 14px;
-    font-size: 16px;
-    opacity: .85;
-  }
-  .meaning span { font-family: "Noto Serif JP", serif; margin-right: 8px; }
-  .haiku { max-width: 520px; margin: 8vh 0; }
   .jp {
-    font-family: "Noto Serif JP", serif;
-    font-size: clamp(18px, 3.6vw, 22px);
-    letter-spacing: .14em;
-    opacity: .9;
-    margin-bottom: 18px;
+    writing-mode: vertical-rl;
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(20px, 2.6vw, 28px);
+    letter-spacing: .28em;
+    line-height: 1.9;
+    white-space: pre;
   }
+  .en-wrap { padding-top: clamp(40px, 9vh, 110px); max-width: 380px; }
+  .label { font-size: 11px; font-weight: 400; letter-spacing: .3em; text-transform: uppercase; opacity: .75; margin-bottom: 22px; }
   .en {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: clamp(24px, 4.6vw, 32px);
-    line-height: 1.35;
-    white-space: pre-line;
-    margin-bottom: 16px;
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 300;
+    font-size: clamp(24px, 3.2vw, 34px); line-height: 1.32; white-space: pre-line;
   }
-  .poet { font-size: 14px; opacity: .8; letter-spacing: .04em; }
-  footer { font-size: 13px; opacity: .75; }
-  footer a { color: inherit; text-decoration: none; }
+  .poet { margin-top: 22px; font-size: 13px; font-weight: 300; letter-spacing: .1em; opacity: .85; }
+  .poet::before { content: ""; display: inline-block; width: 28px; height: 1px; background: currentColor; vertical-align: middle; margin-right: 12px; opacity: .7; }
+
+  footer { font-size: 12px; font-weight: 300; letter-spacing: .12em; opacity: .8; }
+  footer a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(251,246,238,.4); padding-bottom: 2px; }
+  footer a:hover { border-color: currentColor; }
+
+  .fade { opacity: 0; transform: translateY(8px); animation: in 1.6s cubic-bezier(.2,.7,.2,1) forwards; }
+  .d1 { animation-delay: .2s } .d2 { animation-delay: .7s } .d3 { animation-delay: 1.2s }
+  @keyframes in { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; } .scene .shadow { animation: none; } }
+
+  @media (max-width: 640px) {
+    .poem { justify-self: start; flex-direction: column; gap: 28px; }
+    .jp { writing-mode: horizontal-tb; letter-spacing: .14em; font-size: 18px; white-space: normal; }
+    .en-wrap { padding-top: 0; }
+  }
 </style>
 </head>
 <body>
-<div class="wood" aria-hidden="true">
-  <svg preserveAspectRatio="none" viewBox="0 0 1000 1000">
-    <filter id="grain" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="4" seed="7"/>
-      <feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 1.4 -.35"/>
+<div class="scene" aria-hidden="true">
+  <div class="base"></div>
+  <svg class="grain" preserveAspectRatio="none" viewBox="0 0 1000 1000">
+    <filter id="g" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.11" numOctaves="5" seed="11"/>
+      <feColorMatrix values="0 0 0 0 .32  0 0 0 0 .18  0 0 0 0 .08  0 0 0 1.6 -.45"/>
     </filter>
-    <rect width="1000" height="1000" filter="url(#grain)"/>
+    <rect width="1000" height="1000" filter="url(#g)"/>
   </svg>
+  <svg class="fibre" preserveAspectRatio="none" viewBox="0 0 1000 1000">
+    <filter id="f" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.9" numOctaves="2" seed="3"/>
+      <feColorMatrix values="0 0 0 0 .5  0 0 0 0 .35  0 0 0 0 .2  0 0 0 .9 0"/>
+    </filter>
+    <rect width="1000" height="1000" filter="url(#f)"/>
+  </svg>
+  <div class="light"></div>
+  <div class="shadow"></div>
+  <div class="edge"></div>
 </div>
 
-<main>
-  <header>
+<div class="page">
+  <header class="fade">
     <h1 class="logo">KEHAI</h1>
-    <p class="meaning"><span>気配</span>a sense of presence, before you can see it.</p>
+    <p class="tag"><b>気配</b>a sense of presence</p>
   </header>
 
-  <section class="haiku" aria-live="polite">
-    <p class="jp" id="jp"></p>
-    <p class="en" id="en"></p>
-    <p class="poet" id="poet"></p>
+  <section class="poem" aria-live="polite">
+    <p class="jp fade d1" id="jp" lang="ja"></p>
+    <div class="en-wrap fade d2">
+      <p class="label" id="label">Today</p>
+      <p class="en" id="en"></p>
+      <p class="poet" id="poet"></p>
+    </div>
   </section>
 
-  <footer>&copy; <span id="year"></span> Kehai &nbsp;·&nbsp; <a href="https://atlas.kehai.co">DC Atlas</a></footer>
-</main>
+  <footer class="fade d3">
+    <span>&copy; <span id="year"></span> Kehai</span>
+    <a href="https://atlas.kehai.co">DC Atlas</a>
+  </footer>
+</div>
 
 <script>
 {
-// One classic haiku a day, from the current season (winter begins in November).
 const HAIKU = {
   spring: [
     { jp: "梅一輪　一輪ほどの　暖かさ", en: "One plum blossom—\njust that much\nwarmth.", poet: "Hattori Ransetsu", poetJp: "服部嵐雪", note: "Spring is not here yet. One flower is enough to feel it coming." },
@@ -150,15 +189,17 @@ const HAIKU = {
 };
 
 
+
 const now = new Date();
 const m = now.getMonth();
 const season = m >= 1 && m <= 3 ? "spring" : m >= 4 && m <= 6 ? "summer" : m >= 7 && m <= 9 ? "autumn" : "winter";
 const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
 const list = HAIKU[season];
 const h = list[day % list.length];
-document.getElementById("jp").textContent = h.jp;
+document.getElementById("jp").textContent = h.jp.replace(/\u3000/g, "\n");
 document.getElementById("en").textContent = h.en;
 document.getElementById("poet").textContent = h.poet;
+document.getElementById("label").textContent = "Today \u00b7 " + now.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
 document.getElementById("year").textContent = now.getFullYear();
 }
 </script>
