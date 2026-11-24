@@ -7,7 +7,7 @@
 <meta name="description" content="KEHAI (気配) — a sense of presence. AI infrastructure that senses changes in the energy around it and adapts how it runs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400&family=Inter:wght@400;500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f6f4ef;
@@ -37,33 +37,20 @@
     margin: 0 auto;
     padding: 14vh 28px 10vh;
   }
-  .mark {
-    font-family: "Cormorant Garamond", serif;
+  .logo {
+    font-family: "Jost", "Futura", "Century Gothic", sans-serif;
     font-weight: 500;
-    font-size: 15px;
-    letter-spacing: 0.42em;
-    margin-bottom: 9vh;
-  }
-  .word {
-    display: flex;
-    align-items: baseline;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-  }
-  .word .kanji {
-    font-family: "Noto Serif JP", serif;
-    font-weight: 300;
-    font-size: clamp(56px, 12vw, 84px);
+    font-size: clamp(56px, 13vw, 96px);
     line-height: 1;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.02em;
+    margin-bottom: 36px;
   }
-  .word .reading {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 20px;
+  .reading {
+    font-size: 14px;
     color: var(--muted);
+    margin-bottom: 18px;
   }
+  .reading span { font-family: "Noto Serif JP", serif; }
   .definition {
     font-family: "Cormorant Garamond", serif;
     font-size: clamp(22px, 4vw, 27px);
@@ -136,13 +123,9 @@
 </head>
 <body>
 <main>
-  <div class="mark">KEHAI</div>
-
   <section>
-    <div class="word">
-      <span class="kanji">気配</span>
-      <span class="reading">ke·hai &nbsp;/ keh-high /</span>
-    </div>
+    <h1 class="logo">KEHAI</h1>
+    <p class="reading"><span>気配</span> &nbsp;·&nbsp; ke-hai &nbsp;/ keh-high /</p>
     <p class="definition">
       A sense of presence: the feeling that someone or something is there, or that something is about to change, <em>before you can see it or put it into words.</em>
     </p>
