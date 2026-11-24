@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KEHAI</title>
+<meta name="description" content="KEHAI (気配) — a sense of presence. AI infrastructure that senses changes in the energy around it and adapts how it runs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --ink: #1c1c1a;
+    --muted: #77756e;
+    --line: #dcd8cf;
+    --accent: #8a6f4d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141412; --ink: #ecebe6; --muted: #9a978e; --line: #2e2d29; --accent: #c4a57c; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 14vh 28px 10vh;
+  }
+  .mark {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.42em;
+    margin-bottom: 9vh;
+  }
+  .word {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .word .kanji {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    font-size: clamp(56px, 12vw, 84px);
+    line-height: 1;
+    letter-spacing: 0.06em;
+  }
+  .word .reading {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--muted);
+  }
+  .definition {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(22px, 4vw, 27px);
+    line-height: 1.45;
+    margin-bottom: 22px;
+  }
+  .definition em { font-style: italic; }
+  .company {
+    color: var(--muted);
+    max-width: 520px;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 9vh 0 6vh;
+  }
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 34px;
+  }
+  .haiku-jp {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 400;
+    font-size: clamp(20px, 4.4vw, 25px);
+    letter-spacing: 0.12em;
+    line-height: 1.9;
+    margin-bottom: 26px;
+  }
+  .haiku-en {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: clamp(21px, 4vw, 24px);
+    line-height: 1.5;
+    white-space: pre-line;
+    margin-bottom: 22px;
+  }
+  .poet {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 26px;
+  }
+  .poet span { font-family: "Noto Serif JP", serif; }
+  .note {
+    font-size: 15px;
+    color: var(--muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+    max-width: 520px;
+  }
+  footer {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 28px 40px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  footer a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
+  footer a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <div class="mark">KEHAI</div>
+
+  <section>
+    <div class="word">
+      <span class="kanji">気配</span>
+      <span class="reading">ke·hai &nbsp;/ keh-high /</span>
+    </div>
+    <p class="definition">
+      A sense of presence: the feeling that someone or something is there, or that something is about to change, <em>before you can see it or put it into words.</em>
+    </p>
+    <p class="company">
+      That is the idea behind our name. KEHAI builds AI infrastructure that senses the energy around it, from power and grid conditions to heat, and adapts where and how AI runs.
+    </p>
+  </section>
+
+  <hr>
+
+  <section aria-live="polite">
+    <div class="label"><span>Today&rsquo;s kehai</span><span id="date"></span></div>
+    <p class="haiku-jp" id="jp"></p>
+    <p class="haiku-en" id="en"></p>
+    <p class="poet" id="poet"></p>
+    <p class="note" id="note"></p>
+  </section>
+</main>
+
+<footer>
+  <span>&copy; <span id="year"></span> Kehai</span>
+  <span><a href="https://atlas.kehai.co">DC Atlas</a></span>
+</footer>
+
+<script>
+// One classic haiku a day, chosen from the current season.
+// Seasons follow the traditional haiku calendar (winter begins in early November).
+const HAIKU = {
+  spring: [
+    { jp: "梅一輪　一輪ほどの　暖かさ", en: "One plum blossom—\njust that much\nwarmth.", poet: "Hattori Ransetsu", poetJp: "服部嵐雪", note: "Spring is not here yet. One flower is enough to feel it coming." },
+    { jp: "古池や　蛙飛びこむ　水の音", en: "The old pond—\na frog leaps in,\nthe sound of water.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "A single sound, and the silence that was there all along becomes audible." },
+    { jp: "山路来て　何やらゆかし　すみれ草", en: "Coming along the mountain path—\nsomething draws me:\nwild violets.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "He feels the pull before he sees what it is." },
+    { jp: "春の海　終日のたり　のたりかな", en: "The spring sea—\nall day long it rises and falls,\nrises and falls.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "Slow, steady motion you sense more than watch." },
+    { jp: "菜の花や　月は東に　日は西に", en: "Fields of rapeseed—\nthe moon in the east,\nthe sun in the west.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "A moment poised between two states." },
+    { jp: "雪とけて　村いっぱいの　子どもかな", en: "The snow melts—\nand the whole village\nfills with children.", poet: "Kobayashi Issa", poetJp: "小林一茶", note: "Conditions shift, and everything that was waiting comes out at once." },
+    { jp: "さまざまの　事おもひ出す　桜かな", en: "So many things\nthey call to mind—\ncherry blossoms.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "The past is present in the flowers." },
+    { jp: "春雨や　物語りゆく　蓑と傘", en: "Spring rain—\ntalking as they go,\na straw cape and an umbrella.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "We never see the two people. We only sense them through what they carry." },
+    { jp: "白梅に　明くる夜ばかりと　なりにけり", en: "Now every night\nends in a dawn\nof white plum blossom.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "The season turning, felt in the quality of the light." },
+    { jp: "春風や　闘志いだきて　丘に立つ", en: "Spring wind—\nI stand on the hill\nwith fight in my heart.", poet: "Takahama Kyoshi", poetJp: "高浜虚子", note: "Inner resolve meeting the first warm wind." }
+  ],
+  summer: [
+    { jp: "閑さや　岩にしみ入る　蝉の声", en: "Such stillness—\nseeping into the rocks,\nthe cicadas' cry.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Loud sound, and yet what you feel is the stillness." },
+    { jp: "夏草や　兵どもが　夢の跡", en: "Summer grass—\nall that remains\nof warriors' dreams.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Nothing is visible, but the presence of the past is everywhere." },
+    { jp: "涼風の　曲りくねって　来たりけり", en: "The cool breeze\nwinding and twisting\nhas found its way here.", poet: "Kobayashi Issa", poetJp: "小林一茶", note: "You can feel the path the air took to reach you." },
+    { jp: "牡丹散りて　打ちかさなりぬ　二三片", en: "The peony has fallen—\npetals lie on one another,\ntwo or three.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "A small sign that something large has just happened." },
+    { jp: "五月雨や　大河を前に　家二軒", en: "Early-summer rains—\nfacing the swollen river,\ntwo houses.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "The pressure of the water, felt before anything breaks." },
+    { jp: "夕立や　草葉をつかむ　むら雀", en: "Sudden evening shower—\nclutching the blades of grass,\na flock of sparrows.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "The birds sensed the storm before it arrived." },
+    { jp: "不二ひとつ　うづみ残して　若葉かな", en: "Leaving only Fuji\nunburied—\nyoung green leaves.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "A whole landscape changing at once, around one fixed point." },
+    { jp: "蛸壺や　はかなき夢を　夏の月", en: "Octopus traps—\nfleeting dreams\nunder the summer moon.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Something is coming that the dreamer cannot sense." },
+    { jp: "六月を　奇麗な風の　吹くことよ", en: "June—\nhow clean the wind is\nas it blows.", poet: "Masaoka Shiki", poetJp: "正岡子規", note: "Nothing to see. Only a wind that feels different." }
+  ],
+  autumn: [
+    { jp: "秋深き　隣は何を　する人ぞ", en: "Deep autumn—\nmy neighbour,\nwhat does he do?", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Someone is there, just beyond the wall, unseen but felt." },
+    { jp: "此道や　行く人なしに　秋の暮", en: "This road—\nno one walks it\nthis autumn evening.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Absence can be felt as strongly as presence." },
+    { jp: "物言へば　唇寒し　秋の風", en: "When I speak,\nmy lips go cold—\nthe autumn wind.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "The season announces itself on the skin." },
+    { jp: "柿くへば　鐘が鳴るなり　法隆寺", en: "I bite into a persimmon—\na bell rings out\nfrom Hōryū-ji.", poet: "Masaoka Shiki", poetJp: "正岡子規", note: "Two small events, and a whole place comes alive around them." },
+    { jp: "桐一葉　日当りながら　落ちにけり", en: "One paulownia leaf\nfalls,\nstill in the sunlight.", poet: "Takahama Kyoshi", poetJp: "高浜虚子", note: "A single leaf, and you know the season has turned." },
+    { jp: "白露や　茨の刺に　ひとつづつ", en: "White dew—\non every thorn of the briar,\none drop each.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "The cold of the night, made visible one point at a time." },
+    { jp: "石山の　石より白し　秋の風", en: "Whiter than the stones\nof Stone Mountain—\nthe autumn wind.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Wind has no colour, yet he feels it as white." },
+    { jp: "荒海や　佐渡に横たふ　天河", en: "Rough sea—\nstretching out over Sado,\nthe River of Heaven.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Vast forces, sensed in the dark." },
+    { jp: "朝顔に　釣瓶とられて　もらひ水", en: "The morning glory\nhas taken my well bucket—\nI borrow water.", poet: "Kaga no Chiyo-jo", poetJp: "加賀千代女", note: "She notices a delicate life and adjusts around it." },
+    { jp: "名月を　取ってくれろと　泣く子かな", en: "“Get me that harvest moon!”\ncries\nthe child.", poet: "Kobayashi Issa", poetJp: "小林一茶", note: "So present it feels within reach." },
+    { jp: "山は暮れて　野は黄昏の　芒かな", en: "The mountains in darkness,\nthe fields still at dusk—\npampas grass.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "Night arriving at different speeds across one view." },
+    { jp: "鶏頭の　十四五本も　ありぬべし", en: "Cockscombs—\nthere must be\nfourteen or fifteen.", poet: "Masaoka Shiki", poetJp: "正岡子規", note: "Written from his sickbed. He senses the flowers he cannot fully see." }
+  ],
+  winter: [
+    { jp: "斧入れて　香におどろくや　冬木立", en: "Striking with the axe—\nstartled by the scent:\nthe winter grove.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "Trees that looked dead were full of life inside." },
+    { jp: "いくたびも　雪の深さを　尋ねけり", en: "Again and again\nI ask how deep\nthe snow has grown.", poet: "Masaoka Shiki", poetJp: "正岡子規", note: "Unable to leave his bed, he feels the snow through others." },
+    { jp: "遠山に　日の当りたる　枯野かな", en: "On the far mountains\nsunlight rests—\nwithered fields.", poet: "Takahama Kyoshi", poetJp: "高浜虚子", note: "Warmth that is there, though not yet where you are." },
+    { jp: "是がまあ　つひの栖か　雪五尺", en: "So this, then,\nis my final home—\nfive feet of snow.", poet: "Kobayashi Issa", poetJp: "小林一茶", note: "The weight of a place, felt all at once." },
+    { jp: "葱買うて　枯木の中を　帰りけり", en: "Having bought leeks,\nI walk home\nthrough the bare trees.", poet: "Yosa Buson", poetJp: "与謝蕪村", note: "Quiet cold, and the warmth of home ahead." },
+    { jp: "初しぐれ　猿も小蓑を　ほしげなり", en: "First winter rain—\neven the monkey seems to want\na little straw coat.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "The first cold rain, sensed in another creature." },
+    { jp: "凩の　果はありけり　海の音", en: "The winter gale\ndoes have an end—\nthe sound of the sea.", poet: "Ikenishi Gonsui", poetJp: "池西言水", note: "You hear where the wind goes, though you cannot see it." },
+    { jp: "水仙や　白き障子の　とも映り", en: "Narcissus—\nand the white paper screen\nreflecting each other.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "Two quiet presences brightening one room." },
+    { jp: "冬の日や　馬上に氷る　影法師", en: "Winter sun—\nfrozen on horseback,\nmy shadow.", poet: "Matsuo Bashō", poetJp: "松尾芭蕉", note: "The cold made visible in a shadow." }
+  ]
+};
+
+function seasonOf(month) { // month: 0–11
+  if (month >= 1 && month <= 3) return "spring";  // Feb–Apr
+  if (month >= 4 && month <= 6) return "summer";  // May–Jul
+  if (month >= 7 && month <= 9) return "autumn";  // Aug–Oct
+  return "winter";                                 // Nov–Jan
+}
+
+const now = new Date();
+const start = new Date(now.getFullYear(), 0, 0);
+const dayOfYear = Math.floor((now - start) / 86400000);
+const list = HAIKU[seasonOf(now.getMonth())];
+const h = list[dayOfYear % list.length];
+
+document.getElementById("jp").textContent = h.jp;
+document.getElementById("en").textContent = h.en;
+document.getElementById("poet").innerHTML = h.poet + " &nbsp;<span>" + h.poetJp + "</span>";
+document.getElementById("note").textContent = h.note;
+document.getElementById("date").textContent = now.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+document.getElementById("year").textContent = now.getFullYear();
+</script>
+</body>
+</html>
